@@ -1,6 +1,6 @@
 const EPSILON = 2.220446049250313e-16
 
-abstract class ComplexNumber {
+export abstract class ComplexNumber {
     a: number;
     b: number;
 
@@ -21,63 +21,65 @@ abstract class ComplexNumber {
 
     algebraic(): ComplexAlgebraic { return this as unknown as ComplexAlgebraic; }
     polar(): ComplexPolar { return this as unknown as ComplexPolar; }
-    isAlmostEqual(c: ComplexNumber): boolean { return this.abs() - c.abs() <= EPSILON }
+    isAlmostEqual(c: ComplexNumber, e?: number): boolean { return this.abs() - c.abs() <= (e ? e * Math.pow(1, e) : EPSILON) }
 }
 
 export class ComplexAlgebraic extends ComplexNumber {
-    re: number;
-    im: number;
 
     constructor(re: number, im: number) {
         super(re, im)
     }
 
     public neg(): ComplexAlgebraic {
-        return new ComplexAlgebraic(-this.re, -this.im)
+        return new ComplexAlgebraic(-this.a, -this.b)
     }
 
     public add(c: ComplexAlgebraic): ComplexAlgebraic {
-        return new ComplexAlgebraic(this.re + c.re, this.im + c.im)
+        return new ComplexAlgebraic(this.a + c.a, this.b + c.b)
     }
 
     public abs(): number {
-        return Math.abs(Math.sqrt((this.re * this.re) + (this.im * this.im)))
+        return Math.abs(Math.sqrt((this.a * this.a) + (this.b * this.b)))
     }
 
     public con(): ComplexAlgebraic {
-        return new ComplexAlgebraic(this.re, -this.im);
+        return new ComplexAlgebraic(this.a, -this.b);
     }
 
     public polar(): ComplexPolar {
-        const rad = Math.sqrt(this.re * this.re + this.im * this.im);
-        const phi = Math.atan2(this.re, this.im);
+        const rad = Math.sqrt(this.a * this.a + this.b * this.b);
+        const phi = Math.atan2(this.a, this.b);
         return new ComplexPolar(rad, phi);
     }
 }
 
 export class ComplexPolar extends ComplexNumber {
-    rad: number
-    phi: number
 
     constructor(rad: number, phi: number) {
-        super(rad, phi);
+        super(rad, phi)
     }
 
     public inv(): ComplexPolar {
-        return new ComplexPolar(1/this.rad, this.phi)
+        return new ComplexPolar(1/this.a, this.b)
     }
 
     public mul(c: ComplexPolar): ComplexPolar {
-        return new ComplexPolar(this.rad * c.rad, (this.phi * c.phi) % 360);
+        return new ComplexPolar(this.a * c.a, (this.b * c.b) % 360);
     }
 
     public con(): ComplexPolar {
-        return new ComplexPolar(this.rad, -this.phi);
+        return new ComplexPolar(this.a, -this.b);
     }
     
     public algebraic(): ComplexAlgebraic {
-        const re: number = this.rad * Math.cos(this.phi);
-        const im: number = this.rad * Math.sin(this.phi);
+        const re: number = this.a * Math.cos(this.b);
+        const im: number = this.a * Math.sin(this.b);
         return new ComplexAlgebraic(re, im);
     }
 }
+
+const cn1: ComplexNumber = new ComplexAlgebraic(15, 3);
+console.log(cn1)
+const cn2: ComplexNumber = cn1.polar();
+console.log(cn2.algebraic());
+console.log(cn2.add(cn1));

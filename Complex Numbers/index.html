@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Komplexe Zahlen</title>
+</head>
+<body>
+    <div>
+        <h1>Rechner für Komplexe Zahlen</h1>
+        <h4>Formate: <span>a + b<i>i</i></span> oder <span><i>r</i> &#x2219; e<sup><i>i</i> &#x2219; &#x03C6;</sup></span></h4>
+    </div>
+    <div>
+        <p>Erste Zahl</p>
+        <input id="real1" type="number" placeholder="Realteil">  <!-- / Radius -->
+        <input id="imag1" type="number" placeholder="Imaginärteil">  <!-- / Winkel -->
+        <!-- <select id="type1">
+            <option value="algebra">Algebraisch</option>
+            <option value="polar">Polar</option>
+        </select> -->
+    </div>
+    <div>
+        <p>Zweite Zahl</p>
+        <input id="real2" type="number" placeholder="Realteil">  <!-- / Radius -->
+        <input id="imag2" type="number" placeholder="Imaginärteil">  <!-- / Winkel -->
+        <!-- <select id="type2">
+            <option value="algebra">Algebraisch</option>
+            <option value="polar">Polar</option>
+        </select> -->
+    </div>
+    <div>
+        <form>
+            <fieldset>
+                <legend>Rechenart auswählen <em>(Konjugation, Betrag und Umrechnung nur erste Zahl)</em></legend>
+                <div style="margin-top: 1em">
+                    <input type="radio" id="calc1" name="calcselector" value="add" checked>
+                    <label for="calc1">Addieren</label>
+                    <input type="radio" id="calc2" name="calcselector" value="sub">
+                    <label for="calc2">Subtrahieren</label>
+                    <input type="radio" id="calc3" name="calcselector" value="mul">
+                    <label for="calc3">Multiplizieren</label>
+                    <input type="radio" id="calc4" name="calcselector" value="div">
+                    <label for="calc4">Dividieren</label>
+                    <input type="radio" id="calc5" name="calcselector" value="con">
+                    <label for="calc5">Konjugieren</label>
+                    <input type="radio" id="calc6" name="calcselector" value="abs">
+                    <label for="calc6">Betrag</label>
+                    <input type="radio" id="calc7" name="calcselector" value="pol">
+                    <label for="calc7">Umrechnung</label>
+                </div>
+                <div>
+                    <button type="submit" id="calc">Berechnen</button>
+                </div>
+            </fieldset>
+        </form>
+        <pre id="log"></pre>
+    </div>
+    <div>
+        <h2 id="calculatedValue">Noch nichts berechnet!</h2>
+        <button style="margin-top: 0" id="changeVisual">Ändern</button>
+    </div>
+    <canvas id="myCanvas" width="500" height="300" style="border:1px solid #000000;">
+    </canvas>
+    <script src="render.js"></script>
+</body>
+</html>

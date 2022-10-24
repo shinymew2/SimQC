@@ -1,0 +1,20 @@
+body {
+    background-color: rgb(24, 23, 23);
+    color: #818181;
+    font-size: 20px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+    margin-top: 2em;
+}
+
+fieldset {
+    margin-top: 2em;
+    margin-inline: 10em;
+}
+
+span, em {
+    color: rgb(219, 1, 1)
+}

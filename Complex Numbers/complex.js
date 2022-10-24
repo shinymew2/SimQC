@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 exports.__esModule = true;
-exports.ComplexPolar = exports.ComplexAlgebraic = void 0;
+exports.ComplexPolar = exports.ComplexAlgebraic = exports.ComplexNumber = void 0;
 var EPSILON = 2.220446049250313e-16;
 var ComplexNumber = /** @class */ (function () {
     function ComplexNumber(a, b) {
@@ -31,29 +31,30 @@ var ComplexNumber = /** @class */ (function () {
     ComplexNumber.prototype.abs = function () { return this.algebraic().abs(); };
     ComplexNumber.prototype.algebraic = function () { return this; };
     ComplexNumber.prototype.polar = function () { return this; };
-    ComplexNumber.prototype.isAlmostEqual = function (c) { return this.abs() - c.abs() <= EPSILON; };
+    ComplexNumber.prototype.isAlmostEqual = function (c, e) { return this.abs() - c.abs() <= (e ? e * Math.pow(1, e) : EPSILON); };
     return ComplexNumber;
 }());
+exports.ComplexNumber = ComplexNumber;
 var ComplexAlgebraic = /** @class */ (function (_super) {
     __extends(ComplexAlgebraic, _super);
     function ComplexAlgebraic(re, im) {
         return _super.call(this, re, im) || this;
     }
     ComplexAlgebraic.prototype.neg = function () {
-        return new ComplexAlgebraic(-this.re, -this.im);
+        return new ComplexAlgebraic(-this.a, -this.b);
     };
     ComplexAlgebraic.prototype.add = function (c) {
-        return new ComplexAlgebraic(this.re + c.re, this.im + c.im);
+        return new ComplexAlgebraic(this.a + c.a, this.b + c.b);
     };
     ComplexAlgebraic.prototype.abs = function () {
-        return Math.abs(Math.sqrt((this.re * this.re) + (this.im * this.im)));
+        return Math.abs(Math.sqrt((this.a * this.a) + (this.b * this.b)));
     };
     ComplexAlgebraic.prototype.con = function () {
-        return new ComplexAlgebraic(this.re, -this.im);
+        return new ComplexAlgebraic(this.a, -this.b);
     };
     ComplexAlgebraic.prototype.polar = function () {
-        var rad = Math.sqrt(this.re * this.re + this.im * this.im);
-        var phi = Math.atan2(this.re, this.im);
+        var rad = Math.sqrt(this.a * this.a + this.b * this.b);
+        var phi = Math.atan2(this.a, this.b);
         return new ComplexPolar(rad, phi);
     };
     return ComplexAlgebraic;
@@ -65,19 +66,24 @@ var ComplexPolar = /** @class */ (function (_super) {
         return _super.call(this, rad, phi) || this;
     }
     ComplexPolar.prototype.inv = function () {
-        return new ComplexPolar(1 / this.rad, this.phi);
+        return new ComplexPolar(1 / this.a, this.b);
     };
     ComplexPolar.prototype.mul = function (c) {
-        return new ComplexPolar(this.rad * c.rad, (this.phi * c.phi) % 360);
+        return new ComplexPolar(this.a * c.a, (this.b * c.b) % 360);
     };
     ComplexPolar.prototype.con = function () {
-        return new ComplexPolar(this.rad, -this.phi);
+        return new ComplexPolar(this.a, -this.b);
     };
     ComplexPolar.prototype.algebraic = function () {
-        var re = this.rad * Math.cos(this.phi);
-        var im = this.rad * Math.sin(this.phi);
+        var re = this.a * Math.cos(this.b);
+        var im = this.a * Math.sin(this.b);
         return new ComplexAlgebraic(re, im);
     };
     return ComplexPolar;
 }(ComplexNumber));
 exports.ComplexPolar = ComplexPolar;
+var cn1 = new ComplexAlgebraic(15, 3);
+console.log(cn1);
+var cn2 = cn1.polar();
+console.log(cn2.algebraic());
+console.log(cn2.add(cn1));
