@@ -21,7 +21,7 @@ export abstract class ComplexNumber {
 
     algebraic(): ComplexAlgebraic { return this as unknown as ComplexAlgebraic; }
     polar(): ComplexPolar { return this as unknown as ComplexPolar; }
-    isAlmostEqual(c: ComplexNumber, e?: number): boolean { return this.abs() - c.abs() <= (e ? e * Math.pow(1, e) : EPSILON) }
+    isAlmostEqual(c: ComplexNumber, e?: number): boolean { return this.abs() - c.abs() <= (e ? 1 / Math.pow(10, e) : EPSILON) }
 }
 
 export class ComplexAlgebraic extends ComplexNumber {
