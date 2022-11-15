@@ -9,4 +9,4 @@ Komplexe Zahlen waren das erste Thema. Hiermit war man schon vertraut, aber viel
 Ein spannendes Thema war die Herleitung und das Verständnis der Schroedinger Wellengleichung. Diese ist zwar einfach dahergeschrieben, aber schwer zu verstehen. Um mehr darüber zu erfahren, kann man sich im Unterordner [Schroedinger](Schroedinger/) umschauen.
 
 ## Quantum Simulator
-Work in progress: [Quantum Simulator](Quantum%Simulator/)
+Work in progress: [Quantum Simulator](Quantum%20Simulator/)
