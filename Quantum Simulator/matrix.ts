@@ -165,7 +165,7 @@ export class ComplexMatrix {
             for (var newCol: number = 0; newCol < newMatrix.columns; newCol++) { // current new row and col
                 var sum: ComplexNumber = new ComplexAlgebraic(0, 0)
                 for (var i: number = 0; i < this.rows; i++) {
-                    sum = sum.add(this.matrixValues[newRow][i].mul(matrix.matrixValues[i][newCol]))
+                    sum = sum.add(this.matrixValues[newRow][i].mul(matrix.matrixValues[i][newCol]).algebraic())
                 }
                 newMatrix.matrixValues[newRow][newCol] = sum
             }

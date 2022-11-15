@@ -38,10 +38,6 @@ export class ComplexAlgebraic extends ComplexNumber {
         return new ComplexAlgebraic(this.a + c.a, this.b + c.b)
     }
 
-    public mul(c: ComplexAlgebraic) {
-        return new ComplexAlgebraic(this.a * c.a - this.b * c.b, this.a * c.b + this.b * c.a)
-    }
-
     public abs(): number {
         return Math.abs(Math.sqrt((this.a * this.a) + (this.b * this.b)))
     }
@@ -76,7 +72,7 @@ export class ComplexPolar extends ComplexNumber {
     }
 
     public mul(c: ComplexPolar): ComplexPolar {
-        return new ComplexPolar(this.a * c.a, this.b * c.b)
+        return new ComplexPolar(this.a * c.a, this.b + c.b)
     }
 
     public con(): ComplexPolar {
