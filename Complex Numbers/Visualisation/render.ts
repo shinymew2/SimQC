@@ -1,5 +1,5 @@
 import { Drawing } from './coordinate'
-import { ComplexNumber } from './complex'
+import { ComplexNumber } from '../complex'
 
 class Render {
     cn: ComplexNumber;

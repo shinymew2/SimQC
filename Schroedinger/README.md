@@ -1,0 +1,1 @@
+# Schroedinger Wellengleichung - Ein Annäherungsversuch
