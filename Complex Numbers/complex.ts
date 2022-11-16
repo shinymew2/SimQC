@@ -47,9 +47,10 @@ export class ComplexAlgebraic extends ComplexNumber {
     }
 
     public polar(): ComplexPolar {
-        const rad = Math.sqrt(this.a * this.a + this.b * this.b)
-        const phi = Math.atan2(this.b, this.a)
-        return new ComplexPolar(rad, phi)
+        const re = this.a, im = this.b
+        const r = Math.sqrt(re * re + im * im)
+        const phi = Math.atan2(im, re)
+        return new ComplexPolar(r, phi)
     }
 
     public re(): number {
@@ -80,8 +81,9 @@ export class ComplexPolar extends ComplexNumber {
     }
     
     public algebraic(): ComplexAlgebraic {
-        const re: number = this.a * Math.cos(this.b)
-        const im: number = this.a * Math.sin(this.b)
+        const r = this.a, phi = this.b
+        const re: number = r * Math.cos(phi)
+        const im: number = r * Math.sin(phi)
         return new ComplexAlgebraic(re, im)
     }
 
@@ -94,8 +96,24 @@ export class ComplexPolar extends ComplexNumber {
     }
 }
 
-// const cn1: ComplexNumber = new ComplexAlgebraic(15, 3)
-// console.log(cn1)
-// const cn2: ComplexNumber = cn1.polar()
-// console.log(cn2.algebraic())
-// console.log(cn2.add(cn1))
+test()
+
+function test(): void {
+    const cn1: ComplexNumber = new ComplexAlgebraic(-0.95766, -0.28790)
+    const cn2: ComplexNumber = new ComplexPolar(1, 16)
+    //const cn3: ComplexNumber = cn1.polar() // algebraic to polar
+    //const cn4: ComplexNumber = cn2.algebraic() // polar to algebraic
+
+    console.log("ComplexAlgebraic: ")
+    console.log(cn1)
+    console.log("\nComplexAlgebraic to ComplexPolar: ")
+    console.log(cn1.polar())
+    console.log("\nComplexPolar: ")
+    console.log(cn2)
+    console.log("\nComplexPolar to ComplexAlgebraic:")
+    console.log(cn2.algebraic())
+    // console.log("\nComplexAlgebraic to ComplexPolar: ")
+    // console.log(cn3)
+    // console.log("\nComplexPolar to ComplexAlgebraic: ")
+    // console.log(cn4)
+}
