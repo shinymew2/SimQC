@@ -14,10 +14,10 @@ export class Matrix {
     }
 
     initValues(values: number[][]): Matrix {
-        if (values[0].length > this.rows || values.length > this.columns) {
+        if (values.length > this.rows || values[0].length > this.columns) {
             console.log("Matrix has not enough columns or rows, please try again\n")
             return this
-        } else if ((values[0].length < this.rows && this.rows != 0) || (values.length < this.columns && this.columns != 0)) {
+        } else if ((values[0].length < this.columns && this.columns != 0) || (values.length < this.rows && this.rows != 0)) {
             console.log("Matrix has more rows or columns than values specified, please try again\n")
             return this
         }
@@ -63,7 +63,7 @@ export class Matrix {
     }
 
     getValue(row: number, col: number): number {
-        return this.matrixValues[row - 1][col - 1] // -1 for people who dont know that array starts at 0 haha
+        return this.matrixValues[row][col]
     }
 
     multiply(matrix: Matrix): Matrix {
@@ -73,12 +73,28 @@ export class Matrix {
         }
         var newMatrix: Matrix = new Matrix(this.rows, matrix.columns)
         for (var newRow: number = 0; newRow < newMatrix.rows; newRow++) {
-            for (var newCol: number = 0; newCol < newMatrix.columns; newCol++) { // current new row and col
+            for (var newCol: number = 0; newCol < newMatrix.columns; newCol++) {
                 var sum: number = 0
                 for (var i: number = 0; i < this.rows; i++) {
                     sum += this.matrixValues[newRow][i] * matrix.matrixValues[i][newCol]
                 }
                 newMatrix.matrixValues[newRow][newCol] = sum
+            }
+        }
+        return newMatrix
+    }
+
+    kroneckerProduct(matrix: Matrix): Matrix {
+        var newMatrix: Matrix = new Matrix(this.rows * matrix.rows, this.columns * matrix.columns)
+        var rowCounterThis: number = 0, rowCounterMatrix: number = 0
+        for (var newRow: number = 0; newRow < newMatrix.rows; newRow++) {
+            var colCounterThis: number = 0, colcounterMatrix: number = 0
+            if (newRow % matrix.rows === 0 && newRow !== 0) rowCounterThis++
+            rowCounterMatrix = newRow % matrix.rows
+            for (var newCol: number = 0; newCol < newMatrix.columns; newCol++) {
+                if (newCol % matrix.columns === 0 && newCol !== 0) colCounterThis++
+                colcounterMatrix = newCol % matrix.columns
+                newMatrix.matrixValues[newRow][newCol] = this.matrixValues[rowCounterThis][colCounterThis] * matrix.matrixValues[rowCounterMatrix][colcounterMatrix]
             }
         }
         return newMatrix
@@ -99,10 +115,10 @@ export class ComplexMatrix {
     }
 
     initValues(values: ComplexNumber[][]): ComplexMatrix {
-        if (values[0].length > this.rows || values.length > this.columns) {
+        if (values.length > this.rows || values[0].length > this.columns) {
             console.log("Matrix has not enough columns or rows, please try again\n")
             return this
-        } else if ((values[0].length < this.rows && this.rows != 0) || (values.length < this.columns && this.columns != 0)) {
+        } else if ((values[0].length < this.columns && this.columns != 0) || (values.length < this.rows && this.rows != 0)) {
             console.log("Matrix has more rows or columns than values specified, please try again\n")
             return this
         }
@@ -152,7 +168,7 @@ export class ComplexMatrix {
     }
 
     getValue(row: number, col: number): ComplexNumber {
-        return this.matrixValues[row - 1][col - 1] // -1 for people who dont know that array starts at 0 haha
+        return this.matrixValues[row][col]
     }
 
     multiply(matrix: ComplexMatrix): ComplexMatrix {
@@ -162,7 +178,7 @@ export class ComplexMatrix {
         }
         var newMatrix: ComplexMatrix = new ComplexMatrix(this.rows, matrix.columns)
         for (var newRow: number = 0; newRow < newMatrix.rows; newRow++) {
-            for (var newCol: number = 0; newCol < newMatrix.columns; newCol++) { // current new row and col
+            for (var newCol: number = 0; newCol < newMatrix.columns; newCol++) {
                 var sum: ComplexNumber = new ComplexAlgebraic(0, 0)
                 for (var i: number = 0; i < this.rows; i++) {
                     sum = sum.add(this.matrixValues[newRow][i].mul(matrix.matrixValues[i][newCol]).algebraic())
@@ -172,43 +188,20 @@ export class ComplexMatrix {
         }
         return newMatrix
     }
-}
-
-/**
- * Tests
- */
-
-test()
-
-function test(): void {
-    /* Constants */
-    const c1: ComplexNumber = new ComplexAlgebraic(2, 1)
-    const c2: ComplexNumber = new ComplexAlgebraic(1, 1)
-    const c3: ComplexNumber = new ComplexAlgebraic(1, 2)
-    const noIm: ComplexNumber = new ComplexAlgebraic(1, 0)
-    const realMatrix: Matrix = new Matrix(3, 3).initValues([[1, 1, 1], 
-                                                            [1, 1, 0], 
-                                                            [1, 0, 0]])
-    const realMatrix2: Matrix = new Matrix(3, 3).initValues([[2, 2, 2], 
-                                                             [2, 2, 1], 
-                                                             [2, 1, 1]])
-    const complexMatrix: ComplexMatrix = new ComplexMatrix(3, 3).initValues([[c1, c2, c3], 
-                                                                             [c2, c2, c2], 
-                                                                             [c3, c2, c1]])
-    const complexMatrix2: ComplexMatrix = new ComplexMatrix(3, 3).initValues([[c1, c2, c3], 
-                                                                              [c1, c2, c3], 
-                                                                              [c1, c2, c3]])
-    const complexNoImaginary: ComplexMatrix = new ComplexMatrix(3, 3).initValues([[noIm, noIm, noIm], 
-                                                                                  [noIm, noIm, noIm], 
-                                                                                  [noIm, noIm, noIm]])
     
-    /* Logs */
-    console.log("Multiplication between Matrix and Matrix")
-    console.log(realMatrix.multiply(realMatrix2))
-    console.log("\nMultiplication between ComplexMatrix and ComplexMatrix")
-    console.log(complexMatrix.multiply(complexMatrix2).matrixValues);
-    console.log("\nMultiplication between Matrix and ComplexMatrix:")
-    console.log(realMatrix.transformToComplex().multiply(complexMatrix).transformToReal().matrixValues)
-    console.log("\nMultiplication between Matrix and ComplexMatrix with successful transformation to Matrix:")
-    console.log(realMatrix.transformToComplex().multiply(complexNoImaginary).transformToReal())
+    kroneckerProduct(matrix: ComplexMatrix): ComplexMatrix {
+        var newMatrix: ComplexMatrix = new ComplexMatrix(this.rows * matrix.rows, this.columns * matrix.columns)
+        var rowCounterThis: number = 0, rowCounterMatrix: number = 0
+        for (var newRow: number = 0; newRow < newMatrix.rows; newRow++) {
+            var colCounterThis: number = 0, colcounterMatrix: number = 0
+            if (newRow % matrix.rows === 0 && newRow !== 0) rowCounterThis++
+            rowCounterMatrix = newRow % matrix.rows
+            for (var newCol: number = 0; newCol < newMatrix.columns; newCol++) {
+                if (newCol % matrix.columns === 0 && newCol !== 0) colCounterThis++
+                colcounterMatrix = newCol % matrix.columns
+                newMatrix.matrixValues[newRow][newCol] = this.matrixValues[rowCounterThis][colCounterThis].mul(matrix.matrixValues[rowCounterMatrix][colcounterMatrix])
+            }
+        }
+        return newMatrix
+    }
 }
